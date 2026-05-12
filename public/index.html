@@ -192,11 +192,12 @@ body::before {
   z-index: 60;
   width: 100vw;
   height: 100vh;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   background: #fbeae3;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease-out;
+  transition: opacity 0.15s ease-out;
 }
 
 #transition-video.playing {
@@ -1266,8 +1267,15 @@ function openInvitation() {
   const gate = document.getElementById('gate');
   const main = document.getElementById('main');
   const video = document.getElementById('transition-video');
+  const sealWrapper = document.querySelector('.seal-wrapper');
 
   if (navigator.vibrate) navigator.vibrate(15);
+
+  // IMMEDIATELY stop the seal float animation so it doesn't move while video appears
+  if (sealWrapper) {
+    sealWrapper.style.animation = 'none';
+    sealWrapper.style.transform = 'translateY(0)';
+  }
 
   // Known video duration from compressed file: ~5 seconds
   const VIDEO_DURATION_MS = 5000;

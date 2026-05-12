@@ -2,8 +2,11 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#fbeae3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Lirim &amp; Elira · 1 Gusht 2026</title>
 <meta property="og:title" content="Lirim &amp; Elira po martohen">
 <meta property="og:description" content="Na ndani momentin më të bukur — 1 Gusht 2026">
@@ -55,15 +58,33 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
-/* On desktop, mask the sides so the invitation always looks like a phone frame.
-   The masks are fixed overlays in warm beige that cover everything outside
-   a 480px-wide centered column. This works with all the fixed elements
-   inside (gate, video, modal) without changing their positioning. */
+/* HTML background defaults to the cream/pink so that on mobile (or any device),
+   pull-to-refresh, overscroll, and toolbar collapse always show pink — not beige.
+   The beige letterbox is added back only on desktop via media query below. */
 html {
-  background: #c8b495;
+  background: var(--bg-warm);
 }
 
+body {
+  min-height: 100vh;
+  min-height: 100dvh;  /* dynamic viewport height for iOS Safari */
+  position: relative;
+  overscroll-behavior-y: none;  /* prevent overscroll bg color showing */
+  /* Soft pink-cream-white gradient that drifts subtly */
+  background:
+    radial-gradient(ellipse at 20% 0%, var(--bg-rose) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, var(--white-soft) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, var(--bg-cream) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 50%, var(--bg-warm) 100%);
+  background-attachment: fixed;
+}
+
+/* On desktop only, frame the invitation in a 480px column with warm beige sides */
 @media (min-width: 481px) {
+  html {
+    background: #c8b495;
+  }
   body::before,
   body::after {
     content: '';
@@ -78,19 +99,6 @@ html {
   }
   body::before { left: 0; box-shadow: inset -6px 0 18px rgba(58, 40, 32, 0.15); }
   body::after { right: 0; }
-}
-
-body {
-  min-height: 100vh;
-  position: relative;
-  /* Soft pink-cream-white gradient that drifts subtly */
-  background:
-    radial-gradient(ellipse at 20% 0%, var(--bg-rose) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 30%, var(--white-soft) 0%, transparent 55%),
-    radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 50%),
-    radial-gradient(ellipse at 90% 100%, var(--bg-cream) 0%, transparent 60%),
-    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 50%, var(--bg-warm) 100%);
-  background-attachment: fixed;
 }
 
 body::before {
@@ -217,6 +225,7 @@ body::before {
   z-index: 60;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   object-fit: contain;
   object-position: center;
   background: #fbeae3;
@@ -254,6 +263,7 @@ section {
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;

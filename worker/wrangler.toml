@@ -1,0 +1,19 @@
+name = "lirim-elira-cron"
+main = "index.js"
+compatibility_date = "2026-01-01"
+
+# Run every day at 09:00 UTC (10:00 in Kosovo summer time, 11:00 in winter)
+[triggers]
+crons = ["0 9 * * *"]
+
+# Database binding (same D1 database as the Pages site)
+[[d1_databases]]
+binding = "DB"
+database_name = "lirim-elira-db"
+database_id = "PASTE_DATABASE_ID_HERE"
+
+# Vars set via wrangler secret put (don't commit to git):
+#   FROM_EMAIL       — sender email (must be verified domain in Resend)
+#   TO_EMAIL         — your email: berishalee@gmail.com
+#   RESEND_API_KEY   — from resend.com
+#   ADMIN_KEY        — random string to protect the manual-trigger URL

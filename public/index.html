@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#fbeae3">
+<title>Lirim &amp; Elira · 1 Gusht 2026</title>
+<meta property="og:title" content="Lirim &amp; Elira po martohen">
+<meta property="og:description" content="Na ndani momentin më të bukur — 1 Gusht 2026">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Cormorant+SC:wght@500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* New softer palette: cream → blush pink → white with sage accents */
+  --bg-cream: #fdf6ee;
+  --bg-warm: #fbeae3;
+  --bg-blush: #f5d6cf;
+  --bg-rose: #f0c4c0;
+  --white-soft: #fffbf7;
+
+  --sage: #b5c0a8;
+  --sage-deep: #7e8d72;
+  --terracotta: #c87a64;
+  --rose: #d97f8e;
+  --rose-deep: #b85f70;
+  --rose-dust: #e8a8b0;
+  --blush: #f4c2bc;
+
+  --ink: #3a2820;
+  --ink-soft: #5a4438;
+  --gold: #b89060;
+  --gold-deep: #9a7438;
+
+  --shadow: rgba(58, 40, 32, 0.15);
+  --shadow-soft: rgba(217, 127, 142, 0.18);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overflow-x: hidden;
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  /* Soft pink-cream-white gradient that drifts subtly */
+  background:
+    radial-gradient(ellipse at 20% 0%, var(--bg-rose) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, var(--white-soft) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, var(--bg-cream) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 50%, var(--bg-warm) 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.22 0 0 0 0 0.16 0 0 0 0 0.13 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== GATE ===== */
+#gate {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background:
+    radial-gradient(ellipse at 50% 30%, var(--white-soft) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 60%, var(--bg-rose) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-blush) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.4s cubic-bezier(.22,.61,.36,1), transform 1.4s cubic-bezier(.22,.61,.36,1);
+}
+
+#gate.opening {
+  opacity: 0;
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
+.gate-whisper {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.4s ease-out forwards;
+}
+
+.seal-wrapper {
+  position: relative;
+  cursor: pointer;
+  animation: floatY 5s ease-in-out infinite;
+}
+
+.seal-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217, 127, 142, 0.22) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.seal {
+  position: relative;
+  display: block;
+  width: 240px;
+  height: 240px;
+  object-fit: contain;
+  /* Soft natural shadow — like real photography */
+  filter: drop-shadow(0 10px 18px rgba(94, 31, 48, 0.22))
+          drop-shadow(0 3px 6px rgba(94, 31, 48, 0.15));
+  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.seal-wrapper:active .seal { transform: scale(0.94); }
+.seal-wrapper:hover .seal { transform: scale(1.04) rotate(-2deg); }
+
+.gate-instruction {
+  margin-top: 56px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--ink);
+  opacity: 0;
+  animation: fadeUp 1.4s 1s ease-out forwards;
+  text-align: center;
+}
+
+.gate-instruction span {
+  display: block;
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 14px;
+  color: var(--rose-deep);
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TRANSITION VIDEO ===== */
+#transition-video {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  background: #fbeae3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out;
+}
+
+#transition-video.playing {
+  opacity: 1;
+}
+
+#transition-video.fading-out {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+/* ===== MAIN ===== */
+main {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.6s 0.6s ease-out, transform 1.6s 0.6s ease-out;
+}
+
+main.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+section {
+  padding: 60px 28px;
+  position: relative;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-petals {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50% 0 50% 50%;
+  opacity: 0.6;
+  animation: petalFall linear infinite;
+}
+
+.petal:nth-child(1)  { left: 5%;  animation-duration: 14s; animation-delay: 0s;  background: var(--rose-dust); }
+.petal:nth-child(2)  { left: 12%; animation-duration: 18s; animation-delay: 2s;  background: var(--sage); width: 10px; height: 10px; opacity: 0.45; }
+.petal:nth-child(3)  { left: 20%; animation-duration: 16s; animation-delay: 4s;  background: var(--blush); }
+.petal:nth-child(4)  { left: 28%; animation-duration: 20s; animation-delay: 1s;  background: var(--rose); width: 8px; height: 8px; opacity: 0.5; }
+.petal:nth-child(5)  { left: 36%; animation-duration: 15s; animation-delay: 3s;  background: var(--rose-dust); width: 12px; height: 12px; }
+.petal:nth-child(6)  { left: 44%; animation-duration: 22s; animation-delay: 5s;  background: var(--blush); width: 16px; height: 16px; }
+.petal:nth-child(7)  { left: 50%; animation-duration: 19s; animation-delay: 6s;  background: var(--rose-dust); width: 11px; height: 11px; }
+.petal:nth-child(8)  { left: 56%; animation-duration: 17s; animation-delay: 8s;  background: var(--rose); width: 9px; height: 9px; opacity: 0.5; }
+.petal:nth-child(9)  { left: 62%; animation-duration: 21s; animation-delay: 2.5s; background: var(--blush); width: 13px; height: 13px; }
+.petal:nth-child(10) { left: 68%; animation-duration: 16s; animation-delay: 7s;  background: var(--rose-dust); }
+.petal:nth-child(11) { left: 74%; animation-duration: 23s; animation-delay: 4.5s; background: var(--sage); width: 9px; height: 9px; opacity: 0.4; }
+.petal:nth-child(12) { left: 80%; animation-duration: 18s; animation-delay: 1.5s; background: var(--rose-dust); width: 15px; height: 15px; }
+.petal:nth-child(13) { left: 86%; animation-duration: 20s; animation-delay: 6.5s; background: var(--blush); width: 10px; height: 10px; }
+.petal:nth-child(14) { left: 92%; animation-duration: 15s; animation-delay: 3.5s; background: var(--rose); width: 11px; height: 11px; opacity: 0.55; }
+.petal:nth-child(15) { left: 16%; animation-duration: 24s; animation-delay: 9s;  background: var(--blush); width: 14px; height: 14px; }
+.petal:nth-child(16) { left: 40%; animation-duration: 19s; animation-delay: 10s; background: var(--rose-dust); width: 8px; height: 8px; opacity: 0.5; }
+
+@keyframes petalFall {
+  0% { transform: translateY(-30px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+.hero-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '✦';
+  margin: 0 14px;
+  color: var(--gold);
+}
+
+.names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(72px, 20vw, 120px);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.names .amp {
+  display: block;
+  font-family: 'Cormorant SC', serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  color: var(--rose-deep);
+  margin: 18px 0;
+  text-transform: uppercase;
+}
+
+/* Floral divider — replaces simple line */
+.floral-divider {
+  display: block;
+  margin: 32px auto 28px;
+  width: 240px;
+  height: 36px;
+}
+
+/* Curve ornament — elegant minimal flourish */
+.curve-ornament {
+  display: block;
+  margin: 24px auto;
+  width: 200px;
+  height: 28px;
+  opacity: 0.85;
+}
+
+.hero-message {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--ink);
+  max-width: 340px;
+  margin: 0 auto 56px;
+  line-height: 1.55;
+}
+
+/* ===== DATE BLOCK with floral border ===== */
+.hero-date {
+  display: inline-block;
+  position: relative;
+  padding: 50px 38px;
+  max-width: 100%;
+}
+
+/* Floral borders top & bottom — kept inside date block */
+.date-border-top,
+.date-border-bottom {
+  position: absolute;
+  left: 8%;
+  width: 84%;
+  height: 28px;
+  pointer-events: none;
+}
+
+.date-border-top { top: 8px; }
+.date-border-bottom { bottom: 8px; transform: rotate(180deg); }
+
+.hero-day {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.hero-date-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.hero-date-day {
+  font-size: 68px;
+  line-height: 1;
+  font-feature-settings: 'lnum';
+}
+
+.hero-date-month {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: 60px;
+  color: var(--rose-deep);
+  line-height: 1;
+}
+
+.hero-date-year {
+  font-size: 68px;
+  line-height: 1;
+  font-feature-settings: 'lnum';
+}
+
+.hero-date-time {
+  margin-top: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.scroll-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: var(--ink-soft);
+  margin: 8px auto 0;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.5; }
+  50% { transform: scaleY(1.4); opacity: 1; }
+}
+
+/* ===== COUNTDOWN ===== */
+.countdown-section {
+  padding: 55px 28px;
+  text-align: center;
+}
+
+.section-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 68px;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.section-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 30px;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.count-cell {
+  position: relative;
+  padding: 22px 4px 18px;
+  background: var(--white-soft);
+  border: 1px solid rgba(184, 144, 96, 0.45);
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(217, 127, 142, 0.08);
+}
+
+.count-cell::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba(184, 144, 96, 0.25);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.count-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  font-feature-settings: 'tnum', 'lnum';
+}
+
+.count-label {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+/* ===== LOCATION ===== */
+.location-section {
+  padding: 60px 28px;
+  text-align: center;
+}
+
+.map-frame {
+  position: relative;
+  margin: 32px auto 28px;
+  max-width: 480px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px var(--shadow);
+}
+
+.map-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(184, 144, 96, 0.5);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: none;
+  filter: sepia(0.08) saturate(0.92);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 38px;
+  background: var(--rose-deep);
+  color: var(--white-soft);
+  text-decoration: none;
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(.22,.61,.36,1);
+  border: 1px solid var(--rose-deep);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white-soft);
+  letter-spacing: 0.5em;
+}
+
+.btn-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+/* ===== RSVP ===== */
+.rsvp-section {
+  padding: 60px 28px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.rsvp-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+  margin: 12px auto 36px;
+  max-width: 360px;
+  line-height: 1.55;
+}
+
+.rsvp-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.rsvp-btn {
+  padding: 22px 28px;
+  background: var(--white-soft);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(.22,.61,.36,1);
+  position: relative;
+  overflow: hidden;
+}
+
+.rsvp-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: translateY(101%);
+  transition: transform 0.4s cubic-bezier(.22,.61,.36,1);
+  z-index: 0;
+}
+
+.rsvp-btn span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.4s;
+}
+
+.rsvp-btn:hover::before { transform: translateY(0); }
+.rsvp-btn:hover span { color: var(--white-soft); }
+
+.rsvp-btn.primary {
+  background: var(--rose-deep);
+  color: var(--white-soft);
+  border-color: var(--rose-deep);
+}
+
+.rsvp-btn.primary::before { background: var(--ink); }
+
+.rsvp-confirm {
+  display: none;
+  padding: 30px 24px;
+  margin: 0 auto;
+  max-width: 380px;
+  text-align: center;
+  animation: confirmIn 1s cubic-bezier(.22,.61,.36,1);
+}
+
+.rsvp-confirm.show { display: block; }
+
+.confirm-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconPulse 1.4s ease-out;
+  box-shadow: 0 10px 25px rgba(126, 141, 114, 0.3);
+}
+
+.confirm-icon svg {
+  width: 30px;
+  height: 30px;
+  stroke: var(--white-soft);
+  fill: none;
+  stroke-width: 2.4;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.8s 0.4s ease-out forwards;
+}
+
+.confirm-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 60px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.confirm-message {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+@keyframes confirmIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes iconPulse {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes drawCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ===== RSVP MODAL ===== */
+.rsvp-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.rsvp-modal.open {
+  display: flex;
+  animation: modalFadeIn 0.4s ease-out;
+}
+
+.rsvp-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 40, 32, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.rsvp-modal-content {
+  position: relative;
+  background: var(--white-soft);
+  border-radius: 6px;
+  padding: 44px 32px 36px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 30px 80px rgba(58, 40, 32, 0.35);
+  text-align: center;
+  animation: modalSlideUp 0.5s cubic-bezier(.22,.61,.36,1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.rsvp-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.rsvp-modal-close:hover {
+  background: var(--bg-warm);
+  color: var(--ink);
+}
+
+.rsvp-modal-heading {
+  font-family: 'Great Vibes', cursive;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--ink);
+  margin: 6px 0 28px;
+}
+
+.form-field {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.form-field label {
+  display: block;
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: 1px solid rgba(58, 40, 32, 0.25);
+  border-radius: 3px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--rose-deep);
+}
+
+.form-field input::placeholder {
+  color: rgba(58, 40, 32, 0.3);
+  font-style: italic;
+}
+
+.rsvp-modal-error {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: #a8364a;
+  margin-bottom: 14px;
+  min-height: 20px;
+}
+
+.rsvp-modal-submit {
+  width: 100%;
+  padding: 18px 28px;
+  background: var(--rose-deep);
+  color: var(--white-soft);
+  border: 1px solid var(--rose-deep);
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(.22,.61,.36,1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.rsvp-modal-submit:hover:not(:disabled) {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.rsvp-modal-submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.btn-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: var(--white-soft);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.rsvp-modal-submit.loading .btn-label { opacity: 0.7; }
+.rsvp-modal-submit.loading .btn-spinner { display: inline-block; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 40px 28px 36px;
+}
+
+.footer-mark {
+  font-family: 'Great Vibes', cursive;
+  font-size: 64px;
+  color: var(--rose-deep);
+  line-height: 1;
+}
+
+.footer-line {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 12px;
+}
+
+/* ===== REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(.22,.61,.36,1), transform 1.2s cubic-bezier(.22,.61,.36,1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 380px) {
+  .countdown-grid { gap: 7px; }
+  .count-num { font-size: 34px; }
+  .count-cell { padding: 18px 2px 14px; }
+  .hero-date-day, .hero-date-year { font-size: 56px; }
+  .hero-date-month { font-size: 48px; }
+  .hero-date { padding: 50px 22px; }
+  .floral-divider { width: 200px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Transition video — plays when seal is tapped -->
+<video id="transition-video" muted playsinline webkit-playsinline preload="auto" disableRemotePlayback>
+  <source src="transition.mp4" type="video/mp4">
+</video>
+
+<!-- SVG SYMBOL DEFINITIONS — reusable floral pieces -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Curved ornament: elegant double-curve flourish with center accent -->
+    <symbol id="curve-ornament" viewBox="0 0 240 32">
+      <!-- Left flourish: two curves that mirror each other -->
+      <g stroke="#b89060" stroke-width="1.3" fill="none" stroke-linecap="round">
+        <path d="M10,16 Q40,4 70,16 Q90,24 110,16"/>
+        <path d="M10,16 Q40,28 70,16"/>
+      </g>
+      <!-- Right flourish: mirror -->
+      <g stroke="#b89060" stroke-width="1.3" fill="none" stroke-linecap="round">
+        <path d="M130,16 Q150,8 170,16 Q200,28 230,16"/>
+        <path d="M170,16 Q200,4 230,16"/>
+      </g>
+      <!-- Center accent: small diamond + dot -->
+      <g>
+        <circle cx="120" cy="16" r="2.5" fill="#d97f8e"/>
+        <circle cx="120" cy="16" r="1" fill="#b89060"/>
+      </g>
+      <!-- Tiny dot accents at flourish ends -->
+      <circle cx="40" cy="10" r="0.9" fill="#d97f8e"/>
+      <circle cx="200" cy="22" r="0.9" fill="#d97f8e"/>
+    </symbol>
+
+    <!-- Floral divider: trailing roses + leaves with center bloom -->
+    <symbol id="floral-line" viewBox="0 0 240 36">
+      <!-- Left trailing branch -->
+      <g stroke="#7e8d72" stroke-width="1.2" fill="none" opacity="0.8">
+        <path d="M5,18 Q30,12 55,18 Q75,22 95,18"/>
+      </g>
+      <!-- Left leaves -->
+      <g fill="#b5c0a8" opacity="0.9">
+        <ellipse cx="20" cy="14" rx="4" ry="2.2" transform="rotate(-25 20 14)"/>
+        <ellipse cx="38" cy="22" rx="5" ry="2.5" transform="rotate(20 38 22)"/>
+        <ellipse cx="60" cy="14" rx="4" ry="2" transform="rotate(-15 60 14)"/>
+        <ellipse cx="78" cy="22" rx="4" ry="2" transform="rotate(25 78 22)"/>
+      </g>
+      <!-- Left small rose buds -->
+      <g>
+        <circle cx="30" cy="20" r="2.5" fill="#e8a8b0"/>
+        <circle cx="30" cy="20" r="1.2" fill="#b85f70"/>
+        <circle cx="68" cy="20" r="2" fill="#f4c2bc"/>
+        <circle cx="68" cy="20" r="0.9" fill="#b85f70"/>
+      </g>
+
+      <!-- Center bloom (bigger rose with petals) -->
+      <g transform="translate(120,18)">
+        <!-- back leaves -->
+        <ellipse cx="-12" cy="0" rx="8" ry="3" fill="#b5c0a8" opacity="0.85" transform="rotate(-20)"/>
+        <ellipse cx="12" cy="0" rx="8" ry="3" fill="#b5c0a8" opacity="0.85" transform="rotate(20)"/>
+        <!-- outer petals -->
+        <circle r="9" fill="#f4c2bc"/>
+        <!-- inner petals -->
+        <circle r="6.5" fill="#e8a8b0"/>
+        <!-- swirl center -->
+        <path d="M -3,-2 Q 0,-4 3,-2 Q 4,1 1,2 Q -2,3 -3,0 Q -4,-1 -3,-2 Z" fill="#b85f70"/>
+        <circle r="1.5" fill="#7a3848"/>
+      </g>
+
+      <!-- Right trailing branch -->
+      <g stroke="#7e8d72" stroke-width="1.2" fill="none" opacity="0.8">
+        <path d="M145,18 Q165,22 185,18 Q210,12 235,18"/>
+      </g>
+      <!-- Right leaves -->
+      <g fill="#b5c0a8" opacity="0.9">
+        <ellipse cx="162" cy="22" rx="4" ry="2" transform="rotate(-25 162 22)"/>
+        <ellipse cx="180" cy="14" rx="4" ry="2" transform="rotate(15 180 14)"/>
+        <ellipse cx="202" cy="22" rx="5" ry="2.5" transform="rotate(-20 202 22)"/>
+        <ellipse cx="220" cy="14" rx="4" ry="2.2" transform="rotate(25 220 14)"/>
+      </g>
+      <!-- Right small rose buds -->
+      <g>
+        <circle cx="172" cy="20" r="2" fill="#f4c2bc"/>
+        <circle cx="172" cy="20" r="0.9" fill="#b85f70"/>
+        <circle cx="210" cy="20" r="2.5" fill="#e8a8b0"/>
+        <circle cx="210" cy="20" r="1.2" fill="#b85f70"/>
+      </g>
+
+      <!-- Tiny dot accents -->
+      <circle cx="50" cy="10" r="1" fill="#b89060"/>
+      <circle cx="190" cy="26" r="1" fill="#b89060"/>
+      <circle cx="88" cy="26" r="0.8" fill="#d97f8e"/>
+      <circle cx="152" cy="10" r="0.8" fill="#d97f8e"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===== GATE ===== -->
+<div id="gate">
+  <div class="gate-whisper">Ftesë martese</div>
+
+  <div class="seal-wrapper" onclick="openInvitation()">
+    <img class="seal" src="seal.webp" alt="Vula L & E" />
+  </div>
+
+  <div class="gate-instruction">
+    Prek vulën
+    <span>për të hapur</span>
+  </div>
+</div>
+
+
+<!-- ===== MAIN ===== -->
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-petals">
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+    </div>
+
+    <div class="hero-eyebrow">Me nderë ju ftojmë në gëzimin e martesës sonë</div>
+
+    <h1 class="names">
+      Lirim
+      <span class="amp">&amp;</span>
+      Elira
+    </h1>
+
+    <!-- Curve ornament — diskret midis emrave dhe mesazhit -->
+    <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true">
+      <use href="#curve-ornament"/>
+    </svg>
+
+    <p class="hero-message">
+      Këtë ditë duam ta festojmë me ju
+    </p>
+
+    <div class="hero-date">
+      <!-- Curve ornament borders top & bottom — më elegant për datën -->
+      <svg class="date-border-top" viewBox="0 0 240 32" preserveAspectRatio="none" aria-hidden="true">
+        <use href="#curve-ornament"/>
+      </svg>
+
+      <div class="hero-day">E shtunë</div>
+      <div class="hero-date-main">
+        <span class="hero-date-day">01</span>
+        <span class="hero-date-month">Gusht</span>
+        <span class="hero-date-year">2026</span>
+      </div>
+      <div class="hero-date-time">Ora 18:00</div>
+
+      <svg class="date-border-bottom" viewBox="0 0 240 32" preserveAspectRatio="none" aria-hidden="true">
+        <use href="#curve-ornament"/>
+      </svg>
+    </div>
+
+    <div class="scroll-cue">Vazhdo</div>
+  </section>
+
+
+  <section class="countdown-section reveal">
+    <svg class="floral-divider" viewBox="0 0 240 36" aria-hidden="true">
+      <use href="#floral-line"/>
+    </svg>
+    <div class="section-eyebrow">Numërimi</div>
+    <h2 class="section-title">Deri në ditën e dasmës</h2>
+
+    <div class="countdown-grid">
+      <div class="count-cell">
+        <div class="count-num" id="cd-days">00</div>
+        <div class="count-label">ditë</div>
+      </div>
+      <div class="count-cell">
+        <div class="count-num" id="cd-hours">00</div>
+        <div class="count-label">orë</div>
+      </div>
+      <div class="count-cell">
+        <div class="count-num" id="cd-mins">00</div>
+        <div class="count-label">min</div>
+      </div>
+      <div class="count-cell">
+        <div class="count-num" id="cd-secs">00</div>
+        <div class="count-label">sek</div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="location-section reveal">
+    <svg class="floral-divider" viewBox="0 0 240 36" aria-hidden="true">
+      <use href="#floral-line"/>
+    </svg>
+    <div class="section-eyebrow">Lokacioni</div>
+    <h2 class="section-title">Vendi i eventit</h2>
+
+    <div class="map-frame">
+      <iframe
+        src="https://maps.google.com/maps?q=42.402432,21.246698&hl=sq&z=15&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Lokacioni i dasmës"></iframe>
+    </div>
+
+    <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=42.402432,21.246698" target="_blank" rel="noopener">
+      <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Hape në Hartë
+    </a>
+  </section>
+
+
+  <section class="rsvp-section reveal">
+    <div id="rsvp-form">
+      <svg class="floral-divider" viewBox="0 0 240 36" aria-hidden="true">
+        <use href="#floral-line"/>
+      </svg>
+      <div class="section-eyebrow">Konfirmim</div>
+      <h2 class="section-title">Pjesëmarrja juaj</h2>
+      <p class="rsvp-question">Ju lutem konfirmoni ardhjen tuaj.</p>
+
+      <div class="rsvp-buttons">
+        <button class="rsvp-btn primary" onclick="openRsvpModal('yes')">
+          <span>Po, do të vij</span>
+        </button>
+        <button class="rsvp-btn" onclick="openRsvpModal('maybe')">
+          <span>Ndoshta</span>
+        </button>
+        <button class="rsvp-btn" onclick="openRsvpModal('no')">
+          <span>Nuk mund të vij</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="rsvp-confirm" id="rsvp-confirm">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 7"/></svg>
+      </div>
+      <div class="section-eyebrow">Faleminderit</div>
+      <h3 class="confirm-title" id="confirm-title">Ju mirëpresim</h3>
+      <p class="confirm-message" id="confirm-message">
+        Konfirmimi juaj u regjistrua.
+      </p>
+    </div>
+  </section>
+
+  <!-- RSVP Modal -->
+  <div class="rsvp-modal" id="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+    <div class="rsvp-modal-backdrop" onclick="closeRsvpModal()"></div>
+    <div class="rsvp-modal-content">
+      <button class="rsvp-modal-close" onclick="closeRsvpModal()" aria-label="Mbylle">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      </button>
+
+      <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true" style="margin-bottom: 12px;">
+        <use href="#curve-ornament"/>
+      </svg>
+
+      <div class="section-eyebrow" id="rsvp-modal-title">Të dhënat tuaja</div>
+      <h3 class="rsvp-modal-heading">Ju lutemi shkruani emrin</h3>
+
+      <form id="rsvp-form-fields" onsubmit="submitRsvp(event)">
+        <div class="form-field">
+          <label for="rsvp-firstname">Emri</label>
+          <input type="text" id="rsvp-firstname" name="firstname" required autocomplete="given-name" placeholder="Anita">
+        </div>
+
+        <div class="form-field">
+          <label for="rsvp-lastname">Mbiemri</label>
+          <input type="text" id="rsvp-lastname" name="lastname" required autocomplete="family-name" placeholder="Berisha">
+        </div>
+
+        <div class="rsvp-modal-error" id="rsvp-modal-error" role="alert"></div>
+
+        <button type="submit" class="rsvp-modal-submit" id="rsvp-modal-submit">
+          <span class="btn-label">Konfirmo</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true">
+      <use href="#curve-ornament"/>
+    </svg>
+    <div class="footer-mark">L &amp; E</div>
+    <div class="footer-line">01 ✦ 08 ✦ 2026</div>
+  </footer>
+
+</main>
+
+
+<script>
+function openInvitation() {
+  const gate = document.getElementById('gate');
+  const main = document.getElementById('main');
+  const video = document.getElementById('transition-video');
+
+  if (navigator.vibrate) navigator.vibrate(15);
+
+  // Known video duration from compressed file: ~5 seconds
+  const VIDEO_DURATION_MS = 5000;
+  const FADE_OUT_DURATION_MS = 2000;  // last 2s of video fades out
+  const FADE_OUT_START_MS = VIDEO_DURATION_MS - FADE_OUT_DURATION_MS;  // 3s in
+
+  // Show & play video (must be triggered by user tap so iOS allows it)
+  video.classList.add('playing');
+  const playPromise = video.play();
+
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(err => {
+      // Video failed (autoplay blocked, codec issue, etc.) — fall back to instant reveal
+      console.warn('Video failed, falling back:', err);
+      video.remove();
+      gate.classList.add('opening');
+      setTimeout(() => {
+        main.classList.add('revealed');
+        document.body.style.overflow = 'auto';
+        gate.remove();
+      }, 200);
+    });
+  }
+
+  // Hide gate quickly once video covers screen
+  setTimeout(() => gate.classList.add('opening'), 150);
+
+  // Reveal main page UNDER the video so it's ready when video fades
+  setTimeout(() => {
+    main.classList.add('revealed');
+    document.body.style.overflow = 'auto';
+    if (gate.parentNode) gate.remove();
+  }, 1000);
+
+  // Begin video fade-out 2s before end
+  setTimeout(() => {
+    video.classList.remove('playing');
+    video.classList.add('fading-out');
+  }, FADE_OUT_START_MS);
+
+  // Clean up video after fade is complete
+  setTimeout(() => {
+    if (video.parentNode) video.remove();
+  }, VIDEO_DURATION_MS + 200);
+}
+document.body.style.overflow = 'hidden';
+
+const WEDDING = new Date('2026-08-01T18:00:00').getTime();
+
+function updateCountdown() {
+  const diff = WEDDING - Date.now();
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff / 3600000) % 24);
+  const mins = Math.floor((diff / 60000) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ========== RSVP FLOW ==========
+// State: which answer the user clicked (yes/maybe/no)
+let pendingAnswer = null;
+
+function openRsvpModal(answer) {
+  pendingAnswer = answer;
+  const modal = document.getElementById('rsvp-modal');
+  const errorEl = document.getElementById('rsvp-modal-error');
+  const submitBtn = document.getElementById('rsvp-modal-submit');
+
+  // Reset state
+  errorEl.textContent = '';
+  submitBtn.classList.remove('loading');
+  submitBtn.disabled = false;
+  document.getElementById('rsvp-firstname').value = '';
+  document.getElementById('rsvp-lastname').value = '';
+
+  if (navigator.vibrate) navigator.vibrate(15);
+
+  modal.classList.add('open');
+  // Lock body scroll while modal is open
+  document.body.style.overflow = 'hidden';
+
+  // Focus first input after animation
+  setTimeout(() => document.getElementById('rsvp-firstname').focus(), 350);
+}
+
+function closeRsvpModal() {
+  const modal = document.getElementById('rsvp-modal');
+  modal.classList.remove('open');
+  document.body.style.overflow = 'auto';
+  pendingAnswer = null;
+}
+
+async function submitRsvp(event) {
+  event.preventDefault();
+
+  const firstname = document.getElementById('rsvp-firstname').value.trim();
+  const lastname = document.getElementById('rsvp-lastname').value.trim();
+  const errorEl = document.getElementById('rsvp-modal-error');
+  const submitBtn = document.getElementById('rsvp-modal-submit');
+
+  // Client-side validation
+  if (firstname.length < 2 || lastname.length < 2) {
+    errorEl.textContent = 'Ju lutem shkruani emrin dhe mbiemrin tuaj.';
+    return;
+  }
+  if (firstname.length > 50 || lastname.length > 50) {
+    errorEl.textContent = 'Emri ose mbiemri janë shumë të gjatë.';
+    return;
+  }
+
+  errorEl.textContent = '';
+  submitBtn.classList.add('loading');
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch('/api/rsvp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstname,
+        lastname,
+        answer: pendingAnswer,
+      }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || 'Diçka shkoi gabim. Ju lutemi provoni përsëri.');
+    }
+
+    // Success — show confirmation, close modal
+    showConfirmation(pendingAnswer, firstname);
+    closeRsvpModal();
+  } catch (err) {
+    errorEl.textContent = err.message || 'Diçka shkoi gabim. Ju lutemi provoni përsëri.';
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+}
+
+function showConfirmation(answer, firstname) {
+  const form = document.getElementById('rsvp-form');
+  const confirmEl = document.getElementById('rsvp-confirm');
+  const title = document.getElementById('confirm-title');
+  const message = document.getElementById('confirm-message');
+
+  if (navigator.vibrate) navigator.vibrate(20);
+
+  if (answer === 'yes') {
+    title.textContent = 'Ju mirëpresim';
+    message.textContent = `Faleminderit, ${firstname}. Konfirmimi juaj u regjistrua.`;
+  } else if (answer === 'maybe') {
+    title.textContent = 'Faleminderit';
+    message.textContent = `${firstname}, mbajeni datën të shënuar.`;
+  } else {
+    title.textContent = 'Faleminderit';
+    message.textContent = `Faleminderit ${firstname}. Ju lutemi, na njoftoni nëse diçka ndryshon.`;
+  }
+
+  form.style.display = 'none';
+  confirmEl.classList.add('show');
+
+  setTimeout(() => {
+    confirmEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('rsvp-modal');
+    if (modal.classList.contains('open')) closeRsvpModal();
+  }
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

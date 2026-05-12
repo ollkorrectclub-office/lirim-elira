@@ -55,6 +55,31 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
+/* On desktop, mask the sides so the invitation always looks like a phone frame.
+   The masks are fixed overlays in warm beige that cover everything outside
+   a 480px-wide centered column. This works with all the fixed elements
+   inside (gate, video, modal) without changing their positioning. */
+html {
+  background: #c8b495;
+}
+
+@media (min-width: 481px) {
+  body::before,
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: calc((100vw - 480px) / 2);
+    z-index: 9999;
+    pointer-events: none;
+    background: #c8b495;
+    box-shadow: inset 6px 0 18px rgba(58, 40, 32, 0.15);
+  }
+  body::before { left: 0; box-shadow: inset -6px 0 18px rgba(58, 40, 32, 0.15); }
+  body::after { right: 0; }
+}
+
 body {
   min-height: 100vh;
   position: relative;
@@ -1278,7 +1303,7 @@ function openInvitation() {
   }
 
   // Known video duration from compressed file: ~5 seconds
-  const VIDEO_DURATION_MS = 5000;
+  const VIDEO_DURATION_MS = 4000;
   const FADE_OUT_DURATION_MS = 2000;  // last 2s of video fades out
   const FADE_OUT_START_MS = VIDEO_DURATION_MS - FADE_OUT_DURATION_MS;  // 3s in
 

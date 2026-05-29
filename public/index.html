@@ -969,8 +969,98 @@ section {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ===== FOOTER ===== */
-.footer {
+/* ===== PROGRAM / TIMELINE ===== */
+.program-section {
+  padding: 60px 28px 70px;
+  text-align: center;
+}
+
+.timeline {
+  position: relative;
+  max-width: 380px;
+  margin: 36px auto 0;
+  padding: 8px 0 8px 6px;
+  text-align: left;
+}
+
+/* Vertical gold line, positioned where markers are */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 78px;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--gold) 8%,
+    var(--gold) 92%,
+    transparent 100%);
+  opacity: 0.55;
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px 28px 1fr;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 14px 0;
+}
+
+.timeline-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-align: right;
+  padding-top: 1px;
+  white-space: nowrap;
+}
+
+.timeline-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--rose-deep);
+  border: 3px solid var(--white-soft);
+  box-shadow: 0 0 0 1px var(--rose-deep), 0 0 12px rgba(184, 60, 80, 0.3);
+  position: relative;
+  z-index: 2;
+  margin: 6px auto 0;
+}
+
+.timeline-content {
+  text-align: left;
+  padding-top: 0;
+}
+
+.timeline-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+
+.timeline-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
+@media (max-width: 380px) {
+  .timeline { max-width: 100%; }
+  .timeline-time { font-size: 18px; }
+  .timeline-title { font-size: 15px; }
+  .timeline-desc { font-size: 13px; }
+}
+
+
   text-align: center;
   padding: 40px 28px 36px;
 }
@@ -1246,6 +1336,60 @@ section {
       <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       Hape në Hartë
     </a>
+  </section>
+
+
+  <section class="program-section reveal">
+    <svg class="floral-divider" viewBox="0 0 240 36" aria-hidden="true">
+      <use href="#floral-line"/>
+    </svg>
+    <div class="section-eyebrow">Programi</div>
+    <h2 class="section-title">Rrjedha e mbrëmjes</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-time">18:00</div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Mirëseardhja</div>
+          <div class="timeline-desc">Pritja e mysafirëve me aperitiv</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">20:30</div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Hyrja e nuses &amp; Kurorëzimi</div>
+          <div class="timeline-desc">Ceremonia e martesës</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">22:30</div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Darka festive</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">00:00</div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Ndarja e tortës</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-time">02:00</div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">After party</div>
+          <div class="timeline-desc">DJ set deri vonë</div>
+        </div>
+      </div>
+    </div>
   </section>
 
 

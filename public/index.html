@@ -406,8 +406,39 @@ section {
   font-size: 20px;
   color: var(--ink);
   max-width: 340px;
-  margin: 0 auto 56px;
+  margin: 0 auto 24px;
   line-height: 1.55;
+}
+
+/* Personalized guest name block */
+.hero-guest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto 44px;
+  padding: 0 16px;
+  animation: fadeUp 0.8s 0.3s both ease-out;
+}
+
+.hero-guest-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 44px;
+  line-height: 1.1;
+  color: var(--rose-deep);
+  letter-spacing: 0.02em;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.hero-guest-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: center;
+  margin-top: -2px;
 }
 
 /* ===== DATE BLOCK with floral border ===== */
@@ -482,31 +513,52 @@ section {
 }
 
 .scroll-cue {
-  position: absolute;
-  bottom: 32px;
+  position: fixed;
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Cormorant SC', serif;
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 30;
+  background: rgba(251, 234, 227, 0.85);
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(184, 95, 112, 0.18);
+  animation: scrollBounce 1.8s cubic-bezier(.5, 0, .5, 1) infinite;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
-.scroll-cue::after {
-  content: '';
-  display: block;
-  width: 1px;
-  height: 24px;
-  background: var(--ink-soft);
-  margin: 8px auto 0;
-  animation: scrollPulse 2s ease-in-out infinite;
+.scroll-cue.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(20px);
+  animation: none;
 }
 
-@keyframes scrollPulse {
-  0%, 100% { transform: scaleY(1); opacity: 0.5; }
-  50% { transform: scaleY(1.4); opacity: 1; }
+.scroll-cue svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--rose-deep);
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* On desktop with letterbox, keep cue within the 480px column */
+@media (min-width: 481px) {
+  .scroll-cue { left: 50%; }
 }
 
 /* ===== COUNTDOWN ===== */
@@ -969,117 +1021,67 @@ section {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ===== PROGRAM / TIMELINE ===== */
-.program-section {
-  padding: 60px 28px 70px;
+/* ===== FOOTER ===== */
+.footer {
   text-align: center;
+  padding: 60px 28px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
-.timeline {
-  position: relative;
-  max-width: 380px;
-  margin: 36px auto 0;
-  padding: 8px 0 8px 6px;
-  text-align: left;
-}
-
-/* Vertical gold line, positioned where markers are */
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 78px;
-  top: 12px;
-  bottom: 12px;
-  width: 1px;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--gold) 8%,
-    var(--gold) 92%,
-    transparent 100%);
-  opacity: 0.55;
-}
-
-.timeline-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 64px 28px 1fr;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 14px 0;
-}
-
-.timeline-time {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  text-align: right;
-  padding-top: 1px;
-  white-space: nowrap;
-}
-
-.timeline-marker {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--rose-deep);
-  border: 3px solid var(--white-soft);
-  box-shadow: 0 0 0 1px var(--rose-deep), 0 0 12px rgba(184, 60, 80, 0.3);
-  position: relative;
-  z-index: 2;
-  margin: 6px auto 0;
-}
-
-.timeline-content {
-  text-align: left;
-  padding-top: 0;
-}
-
-.timeline-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--ink);
-  line-height: 1.25;
-  margin-bottom: 3px;
-}
-
-.timeline-desc {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--ink-soft);
-  line-height: 1.35;
-}
-
-@media (max-width: 380px) {
-  .timeline { max-width: 100%; }
-  .timeline-time { font-size: 18px; }
-  .timeline-title { font-size: 15px; }
-  .timeline-desc { font-size: 13px; }
-}
-
-
-  text-align: center;
-  padding: 40px 28px 36px;
+.footer .curve-ornament {
+  width: 200px;
+  margin-bottom: 28px;
+  opacity: 0.7;
 }
 
 .footer-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
   font-family: 'Great Vibes', cursive;
-  font-size: 64px;
+  font-size: 80px;
   color: var(--rose-deep);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.footer-mark-letter {
+  display: inline-block;
   line-height: 1;
 }
 
-.footer-line {
+.footer-mark-amp {
+  font-family: 'Cormorant SC', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 28px;
+  color: var(--gold);
+  letter-spacing: 0;
+  transform: translateY(-4px);
+}
+
+.footer-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   font-family: 'Cormorant SC', serif;
   font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.4em;
+  font-size: 12px;
+  letter-spacing: 0.5em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin-top: 12px;
+  margin-top: 16px;
+}
+
+.footer-date-sep {
+  color: var(--gold);
+  font-size: 10px;
+  opacity: 0.7;
 }
 
 /* ===== REVEAL ===== */
@@ -1266,6 +1268,11 @@ section {
       Këtë ditë duam ta festojmë me ju
     </p>
 
+    <div class="hero-guest" id="hero-guest" style="display:none;">
+      <span class="hero-guest-name" id="hero-guest-name"></span>
+      <span class="hero-guest-subtitle" id="hero-guest-subtitle"></span>
+    </div>
+
     <div class="hero-date">
       <!-- Curve ornament borders top & bottom — më elegant për datën -->
       <svg class="date-border-top" viewBox="0 0 240 32" preserveAspectRatio="none" aria-hidden="true">
@@ -1284,8 +1291,6 @@ section {
         <use href="#curve-ornament"/>
       </svg>
     </div>
-
-    <div class="scroll-cue">Vazhdo</div>
   </section>
 
 
@@ -1336,60 +1341,6 @@ section {
       <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       Hape në Hartë
     </a>
-  </section>
-
-
-  <section class="program-section reveal">
-    <svg class="floral-divider" viewBox="0 0 240 36" aria-hidden="true">
-      <use href="#floral-line"/>
-    </svg>
-    <div class="section-eyebrow">Programi</div>
-    <h2 class="section-title">Rrjedha e mbrëmjes</h2>
-
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-time">18:00</div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-title">Mirëseardhja</div>
-          <div class="timeline-desc">Pritja e mysafirëve me aperitiv</div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-time">20:30</div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-title">Hyrja e nuses &amp; Kurorëzimi</div>
-          <div class="timeline-desc">Ceremonia e martesës</div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-time">22:30</div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-title">Darka festive</div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-time">00:00</div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-title">Ndarja e tortës</div>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-time">02:00</div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <div class="timeline-title">After party</div>
-          <div class="timeline-desc">DJ set deri vonë</div>
-        </div>
-      </div>
-    </div>
   </section>
 
 
@@ -1468,11 +1419,26 @@ section {
     <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true">
       <use href="#curve-ornament"/>
     </svg>
-    <div class="footer-mark">L &amp; E</div>
-    <div class="footer-line">01 ✦ 08 ✦ 2026</div>
+    <div class="footer-mark">
+      <span class="footer-mark-letter">L</span>
+      <span class="footer-mark-amp">&amp;</span>
+      <span class="footer-mark-letter">E</span>
+    </div>
+    <div class="footer-date">
+      <span>01</span>
+      <span class="footer-date-sep">✦</span>
+      <span>08</span>
+      <span class="footer-date-sep">✦</span>
+      <span>2026</span>
+    </div>
   </footer>
 
 </main>
+
+<!-- Floating scroll cue — always visible, hides at page bottom -->
+<div class="scroll-cue" id="scroll-cue" aria-hidden="true">
+  <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
 
 
 <script>
@@ -1536,6 +1502,48 @@ function openInvitation() {
 }
 document.body.style.overflow = 'hidden';
 
+// Personalization from invitation:
+// 1. Server-side meta tags (set when /i/[id] route handler injects)
+// 2. URL params (?to=...) — fallback for direct sharing
+// Stores invitation_id globally for RSVP submission.
+let invitationId = null;
+let invitationGuestName = '';
+
+(function personalizeGuest() {
+  // First check meta tags (server-injected via /i/[id])
+  const metaId = document.querySelector('meta[name="invitation-id"]');
+  const metaName = document.querySelector('meta[name="invitation-guest-name"]');
+  const metaSub = document.querySelector('meta[name="invitation-subtitle"]');
+
+  let name = '';
+  let subtitle = '';
+
+  if (metaId && metaName) {
+    invitationId = parseInt(metaId.getAttribute('content'), 10);
+    name = metaName.getAttribute('content') || '';
+    subtitle = (metaSub && metaSub.getAttribute('content')) || '';
+  } else {
+    // Fallback: URL params for non-invitation visits
+    const params = new URLSearchParams(window.location.search);
+    const urlName = params.get('to') || params.get('n') || params.get('name');
+    if (urlName) {
+      name = decodeURIComponent(urlName.replace(/\+/g, ' ')).trim().slice(0, 60);
+    }
+  }
+
+  invitationGuestName = name;
+
+  if (name) {
+    const guestEl = document.getElementById('hero-guest');
+    const nameEl = document.getElementById('hero-guest-name');
+    const subEl = document.getElementById('hero-guest-subtitle');
+    if (nameEl) nameEl.textContent = name;
+    if (subEl && subtitle) subEl.textContent = subtitle;
+    if (guestEl) guestEl.style.display = '';
+  }
+})();
+
+
 const WEDDING = new Date('2026-08-01T18:00:00').getTime();
 
 function updateCountdown() {
@@ -1557,6 +1565,46 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// ========== SCROLL CUE BEHAVIOR ==========
+// Hide while gate is active, hide when user reaches bottom of page
+(function setupScrollCue() {
+  const cue = document.getElementById('scroll-cue');
+  if (!cue) return;
+
+  // Initially hide (gate is showing)
+  cue.classList.add('hidden');
+
+  function checkVisibility() {
+    const gate = document.getElementById('gate');
+    if (gate && !gate.classList.contains('opening')) {
+      cue.classList.add('hidden');
+      return;
+    }
+
+    const scrolled = window.scrollY + window.innerHeight;
+    const total = document.documentElement.scrollHeight;
+    const distanceFromBottom = total - scrolled;
+
+    // Hide when within 100px of the bottom of the page
+    if (distanceFromBottom < 100) {
+      cue.classList.add('hidden');
+    } else {
+      cue.classList.remove('hidden');
+    }
+  }
+
+  // Show after gate opens
+  document.addEventListener('click', () => {
+    setTimeout(checkVisibility, 1200);
+  }, { once: false });
+
+  window.addEventListener('scroll', checkVisibility, { passive: true });
+  window.addEventListener('resize', checkVisibility);
+
+  // Initial check after a delay (in case gate was already opened by some other path)
+  setTimeout(checkVisibility, 2000);
+})();
+
 // ========== RSVP FLOW ==========
 // State: which answer the user clicked (yes/maybe/no)
 let pendingAnswer = null;
@@ -1566,22 +1614,42 @@ function openRsvpModal(answer) {
   const modal = document.getElementById('rsvp-modal');
   const errorEl = document.getElementById('rsvp-modal-error');
   const submitBtn = document.getElementById('rsvp-modal-submit');
+  const firstnameEl = document.getElementById('rsvp-firstname');
+  const lastnameEl = document.getElementById('rsvp-lastname');
 
   // Reset state
   errorEl.textContent = '';
   submitBtn.classList.remove('loading');
   submitBtn.disabled = false;
-  document.getElementById('rsvp-firstname').value = '';
-  document.getElementById('rsvp-lastname').value = '';
+
+  // Pre-populate name from invitation if available — but allow editing
+  if (invitationGuestName) {
+    const parts = invitationGuestName.trim().split(/\s+/);
+    // If invitation is "Familja Berisha" → firstname=Familja, lastname=Berisha
+    // If invitation is "Anita Berisha" → firstname=Anita, lastname=Berisha
+    // If single word → put in firstname, leave lastname blank
+    if (parts.length === 1) {
+      firstnameEl.value = parts[0];
+      lastnameEl.value = '';
+    } else {
+      firstnameEl.value = parts[0];
+      lastnameEl.value = parts.slice(1).join(' ');
+    }
+  } else {
+    firstnameEl.value = '';
+    lastnameEl.value = '';
+  }
 
   if (navigator.vibrate) navigator.vibrate(15);
 
   modal.classList.add('open');
-  // Lock body scroll while modal is open
   document.body.style.overflow = 'hidden';
 
-  // Focus first input after animation
-  setTimeout(() => document.getElementById('rsvp-firstname').focus(), 350);
+  // Focus name field, select all text so user can easily replace
+  setTimeout(() => {
+    firstnameEl.focus();
+    if (firstnameEl.value) firstnameEl.select();
+  }, 350);
 }
 
 function closeRsvpModal() {
@@ -1599,7 +1667,6 @@ async function submitRsvp(event) {
   const errorEl = document.getElementById('rsvp-modal-error');
   const submitBtn = document.getElementById('rsvp-modal-submit');
 
-  // Client-side validation
   if (firstname.length < 2 || lastname.length < 2) {
     errorEl.textContent = 'Ju lutem shkruani emrin dhe mbiemrin tuaj.';
     return;
@@ -1614,14 +1681,13 @@ async function submitRsvp(event) {
   submitBtn.disabled = true;
 
   try {
+    const payload = { firstname, lastname, answer: pendingAnswer };
+    if (invitationId) payload.invitation_id = invitationId;
+
     const response = await fetch('/api/rsvp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstname,
-        lastname,
-        answer: pendingAnswer,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {

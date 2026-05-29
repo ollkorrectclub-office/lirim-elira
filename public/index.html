@@ -78,7 +78,6 @@ body {
     radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 50%),
     radial-gradient(ellipse at 90% 100%, var(--bg-cream) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 50%, var(--bg-warm) 100%);
-  background-attachment: fixed;
 }
 
 /* On desktop only, frame the invitation in a 480px column with warm beige sides */
@@ -1379,42 +1378,6 @@ section {
     </div>
   </section>
 
-  <!-- RSVP Modal -->
-  <div class="rsvp-modal" id="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
-    <div class="rsvp-modal-backdrop" onclick="closeRsvpModal()"></div>
-    <div class="rsvp-modal-content">
-      <button class="rsvp-modal-close" onclick="closeRsvpModal()" aria-label="Mbylle">
-        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
-      </button>
-
-      <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true" style="margin-bottom: 12px;">
-        <use href="#curve-ornament"/>
-      </svg>
-
-      <div class="section-eyebrow" id="rsvp-modal-title">Të dhënat tuaja</div>
-      <h3 class="rsvp-modal-heading">Ju lutemi shkruani emrin</h3>
-
-      <form id="rsvp-form-fields" onsubmit="submitRsvp(event)">
-        <div class="form-field">
-          <label for="rsvp-firstname">Emri</label>
-          <input type="text" id="rsvp-firstname" name="firstname" required autocomplete="given-name" placeholder="Anita">
-        </div>
-
-        <div class="form-field">
-          <label for="rsvp-lastname">Mbiemri</label>
-          <input type="text" id="rsvp-lastname" name="lastname" required autocomplete="family-name" placeholder="Berisha">
-        </div>
-
-        <div class="rsvp-modal-error" id="rsvp-modal-error" role="alert"></div>
-
-        <button type="submit" class="rsvp-modal-submit" id="rsvp-modal-submit">
-          <span class="btn-label">Konfirmo</span>
-          <span class="btn-spinner" aria-hidden="true"></span>
-        </button>
-      </form>
-    </div>
-  </div>
-
 
   <footer class="footer">
     <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true">
@@ -1439,6 +1402,42 @@ section {
 <!-- Floating scroll cue — always visible, hides at page bottom -->
 <div class="scroll-cue" id="scroll-cue" aria-hidden="true">
   <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
+
+<!-- RSVP Modal — outside main so position:fixed works correctly regardless of parent transforms/scrolls -->
+<div class="rsvp-modal" id="rsvp-modal" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+  <div class="rsvp-modal-backdrop" onclick="closeRsvpModal()"></div>
+  <div class="rsvp-modal-content">
+    <button class="rsvp-modal-close" onclick="closeRsvpModal()" aria-label="Mbylle">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+    </button>
+
+    <svg class="curve-ornament" viewBox="0 0 240 32" aria-hidden="true" style="margin-bottom: 12px;">
+      <use href="#curve-ornament"/>
+    </svg>
+
+    <div class="section-eyebrow" id="rsvp-modal-title">Të dhënat tuaja</div>
+    <h3 class="rsvp-modal-heading">Ju lutemi shkruani emrin</h3>
+
+    <form id="rsvp-form-fields" onsubmit="submitRsvp(event)">
+      <div class="form-field">
+        <label for="rsvp-firstname">Emri</label>
+        <input type="text" id="rsvp-firstname" name="firstname" required autocomplete="given-name" placeholder="Anita">
+      </div>
+
+      <div class="form-field">
+        <label for="rsvp-lastname">Mbiemri</label>
+        <input type="text" id="rsvp-lastname" name="lastname" required autocomplete="family-name" placeholder="Berisha">
+      </div>
+
+      <div class="rsvp-modal-error" id="rsvp-modal-error" role="alert"></div>
+
+      <button type="submit" class="rsvp-modal-submit" id="rsvp-modal-submit">
+        <span class="btn-label">Konfirmo</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+    </form>
+  </div>
 </div>
 
 
@@ -1609,6 +1608,36 @@ setInterval(updateCountdown, 1000);
 // ========== RSVP FLOW ==========
 let pendingAnswer = null;
 let savedScrollY = 0;
+let scrollLocked = false;
+
+function lockScroll() {
+  if (scrollLocked) return;
+  scrollLocked = true;
+  savedScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+
+  // Lock body in place at current scroll position
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${savedScrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+  document.documentElement.style.scrollBehavior = 'auto';
+}
+
+function unlockScroll() {
+  if (!scrollLocked) return;
+  scrollLocked = false;
+
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+
+  // Restore scroll position WITHOUT smooth behavior
+  window.scrollTo(0, savedScrollY);
+  document.documentElement.style.scrollBehavior = '';
+}
 
 function openRsvpModal(answer) {
   pendingAnswer = answer;
@@ -1640,38 +1669,26 @@ function openRsvpModal(answer) {
 
   if (navigator.vibrate) navigator.vibrate(15);
 
-  // SCROLL LOCK STRATEGY (iOS Safari compatible)
-  // 1. Save current scroll position
-  savedScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-  // 2. Show modal first (so it's painted before body locks)
+  // Lock scroll FIRST so position is captured, then show modal
+  lockScroll();
   modal.classList.add('open');
-  // 3. Lock body in fixed position at the saved scroll offset
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${savedScrollY}px`;
-  document.body.style.left = '0';
-  document.body.style.right = '0';
-  document.body.style.width = '100%';
 
-  // DO NOT auto-focus — iOS Safari triggers scroll-to-input
-  // User can tap input themselves
+  // DO NOT auto-focus — iOS Safari triggers scroll-into-view
 }
 
 function closeRsvpModal() {
   const modal = document.getElementById('rsvp-modal');
   modal.classList.remove('open');
-
-  // Restore body to scrollable
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.left = '';
-  document.body.style.right = '';
-  document.body.style.width = '';
-
-  // Restore scroll position immediately (no animation, instant snap)
-  window.scrollTo(0, savedScrollY);
-
+  unlockScroll();
   pendingAnswer = null;
 }
+
+// Safety: always unlock scroll if user closes via ESC, back button, etc.
+window.addEventListener('pageshow', () => {
+  if (scrollLocked && !document.getElementById('rsvp-modal').classList.contains('open')) {
+    unlockScroll();
+  }
+});
 
 async function submitRsvp(event) {
   event.preventDefault();

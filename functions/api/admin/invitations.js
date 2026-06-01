@@ -88,7 +88,7 @@ export async function onRequestPost({ request, env }) {
   if (guest_name.length < 1 || guest_name.length > 100) {
     return jsonResponse({ error: 'guest_name required (1-100 chars)' }, 400);
   }
-  if (subtitle.length > 100) {
+  if (subtitle.length > 500) {
     return jsonResponse({ error: 'subtitle too long' }, 400);
   }
 
@@ -154,7 +154,7 @@ export async function onRequestPut({ request, env }) {
   if (guest_name.length < 1 || guest_name.length > 100) {
     return jsonResponse({ error: 'guest_name required (1-100 chars)' }, 400);
   }
-  if (subtitle.length > 100) {
+  if (subtitle.length > 500) {
     return jsonResponse({ error: 'subtitle too long' }, 400);
   }
 

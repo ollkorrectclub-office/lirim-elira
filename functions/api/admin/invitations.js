@@ -129,3 +129,51 @@ export async function onRequestDelete({ request, env }) {
     return jsonResponse({ error: err.message }, 500);
   }
 }
+
+// PUT: Edit invitation by ?id=N. Body: { guest_name, subtitle }
+export async function onRequestPut({ request, env }) {
+  if (!checkAuth(request, env)) return new Response('Forbidden', { status: 403 });
+
+  const url = new URL(request.url);
+  const id = parseInt(url.searchParams.get('id'), 10);
+
+  if (!id || isNaN(id)) {
+    return jsonResponse({ error: 'id parameter required' }, 400);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ error: 'Invalid JSON' }, 400);
+  }
+
+  const guest_name = (body.guest_name || '').toString().trim();
+  const subtitle = (body.subtitle || '').toString().trim();
+
+  if (guest_name.length < 1 || guest_name.length > 100) {
+    return jsonResponse({ error: 'guest_name required (1-100 chars)' }, 400);
+  }
+  if (subtitle.length > 100) {
+    return jsonResponse({ error: 'subtitle too long' }, 400);
+  }
+
+  try {
+    // Verify invitation exists
+    const existing = await env.DB.prepare(`SELECT id FROM invitations WHERE id = ?`)
+      .bind(id).first();
+    if (!existing) {
+      return jsonResponse({ error: 'Invitation not found' }, 404);
+    }
+
+    const result = await env.DB.prepare(
+      `UPDATE invitations SET guest_name = ?, subtitle = ? WHERE id = ?
+       RETURNING id, guest_name, subtitle, views, created_at`
+    ).bind(guest_name, subtitle, id).first();
+
+    return jsonResponse({ ok: true, invitation: result });
+  } catch (err) {
+    console.error('Edit invitation error:', err);
+    return jsonResponse({ error: err.message }, 500);
+  }
+}

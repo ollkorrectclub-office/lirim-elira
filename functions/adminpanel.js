@@ -161,6 +161,69 @@ export async function onRequestGet({ env }) {
   }
   .empty-icon { font-size: 38px; margin-bottom: 8px; opacity: 0.6; }
 
+  /* Edit modal */
+  .edit-modal {
+    position: fixed; inset: 0; z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .edit-modal.open { display: flex; }
+  .edit-modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(58, 36, 24, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .edit-modal-content {
+    position: relative; background: var(--card);
+    border-radius: 12px; padding: 28px 24px 24px;
+    max-width: 420px; width: 100%;
+    box-shadow: 0 30px 80px rgba(58, 36, 24, 0.3);
+  }
+  .edit-modal-content h3 {
+    font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 4px;
+  }
+  .edit-modal-id {
+    font-size: 12px; color: var(--ink-soft); margin-bottom: 20px;
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+  .edit-modal-content .field { margin-bottom: 14px; }
+  .edit-modal-content .field label {
+    display: block; font-size: 11px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 4px; font-weight: 600;
+  }
+  .edit-modal-content input {
+    width: 100%; padding: 10px 12px; font-size: 14px;
+    border: 1px solid rgba(58, 36, 24, 0.2); border-radius: 6px;
+    font-family: inherit;
+  }
+  .edit-modal-content input:focus {
+    outline: none; border-color: var(--rose);
+  }
+  .edit-modal-error {
+    color: var(--red); font-size: 13px;
+    min-height: 18px; margin-bottom: 8px;
+  }
+  .edit-modal-actions {
+    display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px;
+  }
+  .btn-secondary {
+    background: transparent; border: 1px solid rgba(58, 36, 24, 0.2);
+    padding: 9px 16px; border-radius: 6px; font-size: 13px;
+    color: var(--ink-soft); cursor: pointer; font-family: inherit;
+    font-weight: 600;
+  }
+  .btn-secondary:hover { background: rgba(58, 36, 24, 0.04); }
+  .btn-primary {
+    background: var(--rose-deep); color: white; border: none;
+    padding: 9px 20px; border-radius: 6px; font-size: 13px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+    letter-spacing: 0.04em;
+  }
+  .btn-primary:hover { background: var(--ink); }
+  .btn-primary:disabled { opacity: 0.6; cursor: wait; }
+
   /* Toast */
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
@@ -248,6 +311,28 @@ export async function onRequestGet({ env }) {
     <div class="empty hidden" id="empty">
       <div class="empty-icon">📭</div>
       <div>Asnjë ftesë ende. Krijoje të parën më lart.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="edit-modal" id="edit-modal">
+  <div class="edit-modal-backdrop" onclick="closeEditModal()"></div>
+  <div class="edit-modal-content">
+    <h3>Ndrysho ftesën</h3>
+    <p class="edit-modal-id">ID #<span id="edit-id-display">—</span></p>
+    <div class="field">
+      <label>Emri</label>
+      <input type="text" id="edit-name" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Përshkrim (opsionale)</label>
+      <input type="text" id="edit-subtitle" autocomplete="off">
+    </div>
+    <div class="edit-modal-error" id="edit-error"></div>
+    <div class="edit-modal-actions">
+      <button class="btn-secondary" onclick="closeEditModal()">Anulo</button>
+      <button class="btn-primary" id="edit-save-btn" onclick="saveEditInvitation()">Ruaj</button>
     </div>
   </div>
 </div>
@@ -395,6 +480,9 @@ function renderInvitations(list) {
         </td>
         <td>
           <div class="actions">
+            <button class="btn-icon" onclick="editInvitation(\${inv.id}, '\${escapeJs(inv.guest_name)}', '\${escapeJs(inv.subtitle || '')}')" title="Ndrysho">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
             <button class="btn-icon" onclick="copyUrl(\${inv.id}, this)" title="Kopjo URL">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             </button>
@@ -450,6 +538,54 @@ window.shareWhatsApp = function(id, name) {
 
 window.openPreview = function(id) {
   window.open(\`/i/\${id}\`, '_blank');
+};
+
+// Edit invitation: opens modal with current values, allows changing
+let currentEditId = null;
+
+window.editInvitation = function(id, name, subtitle) {
+  currentEditId = id;
+  document.getElementById('edit-id-display').textContent = id;
+  document.getElementById('edit-name').value = name || '';
+  document.getElementById('edit-subtitle').value = subtitle || '';
+  document.getElementById('edit-error').textContent = '';
+  document.getElementById('edit-save-btn').disabled = false;
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(() => document.getElementById('edit-name').focus(), 100);
+};
+
+window.closeEditModal = function() {
+  document.getElementById('edit-modal').classList.remove('open');
+  currentEditId = null;
+};
+
+window.saveEditInvitation = async function() {
+  if (!currentEditId) return;
+  const name = document.getElementById('edit-name').value.trim();
+  const subtitle = document.getElementById('edit-subtitle').value.trim();
+  const errorEl = document.getElementById('edit-error');
+  const saveBtn = document.getElementById('edit-save-btn');
+
+  errorEl.textContent = '';
+  if (!name) { errorEl.textContent = 'Emri është i nevojshëm'; return; }
+
+  saveBtn.disabled = true;
+  try {
+    const r = await fetch(\`/api/admin/invitations?key=\${encodeURIComponent(adminKey)}&id=\${currentEditId}\`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guest_name: name, subtitle })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Gabim');
+
+    closeEditModal();
+    showToast('✓ Ftesa u përditësua');
+    loadData();
+  } catch (err) {
+    errorEl.textContent = 'Gabim: ' + err.message;
+    saveBtn.disabled = false;
+  }
 };
 
 window.deleteInvitation = async function(id, name) {

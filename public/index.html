@@ -71,6 +71,7 @@ body {
   min-height: 100dvh;  /* dynamic viewport height for iOS Safari */
   position: relative;
   overscroll-behavior-y: none;  /* prevent overscroll bg color showing */
+  touch-action: pan-y;          /* explicitly allow single-finger vertical scroll */
   /* Soft pink-cream-white gradient that drifts subtly */
   background:
     radial-gradient(ellipse at 20% 0%, var(--bg-rose) 0%, transparent 50%),
@@ -78,6 +79,13 @@ body {
     radial-gradient(ellipse at 30% 80%, var(--blush) 0%, transparent 50%),
     radial-gradient(ellipse at 90% 100%, var(--bg-cream) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 50%, var(--bg-warm) 100%);
+}
+
+/* When gate is showing, prevent body scroll. CSS class is more reliable than inline style. */
+body.gate-locked {
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* On desktop only, frame the invitation in a 480px column with warm beige sides */
@@ -226,15 +234,18 @@ body::before {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  object-fit: contain;
+  object-fit: cover;          /* fills entire viewport — no letterbox bars */
   object-position: center;
   background: #fbeae3;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none !important;  /* hard guard: never receives touches/clicks */
+  touch-action: none;
   transition: opacity 0.15s ease-out;
+  display: none;              /* invisible by default — JS adds .playing to show */
 }
 
 #transition-video.playing {
+  display: block;
   opacity: 1;
 }
 
@@ -505,14 +516,33 @@ section {
   font-feature-settings: 'lnum';
 }
 
-.hero-date-time {
-  margin-top: 16px;
-  font-family: 'Cormorant Garamond', serif;
+.hero-time-block {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hero-time-label {
+  font-family: 'Cormorant SC', serif;
   font-weight: 700;
-  font-size: 22px;
-  letter-spacing: 0.15em;
+  font-size: 11px;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
+  color: var(--ink-soft);
+  /* trailing space to balance letter-spacing visually */
+  padding-left: 0.45em;
+}
+
+.hero-time-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 0.04em;
   color: var(--ink);
+  line-height: 1.1;
+  font-feature-settings: 'lnum';
 }
 
 .scroll-cue {
@@ -1288,7 +1318,10 @@ section {
         <span class="hero-date-month">Gusht</span>
         <span class="hero-date-year">2026</span>
       </div>
-      <div class="hero-date-time">Ora 18:00</div>
+      <div class="hero-time-block">
+        <div class="hero-time-label">Pritja</div>
+        <div class="hero-time-value">18:00 — 19:30</div>
+      </div>
 
       <svg class="date-border-bottom" viewBox="0 0 240 32" preserveAspectRatio="none" aria-hidden="true">
         <use href="#curve-ornament"/>
@@ -1451,59 +1484,113 @@ function openInvitation() {
   const video = document.getElementById('transition-video');
   const sealWrapper = document.querySelector('.seal-wrapper');
 
+  // Idempotent: if already opened, ignore
+  if (!gate || gate.dataset.opening === '1') return;
+  gate.dataset.opening = '1';
+
   if (navigator.vibrate) navigator.vibrate(15);
 
-  // IMMEDIATELY stop the seal float animation so it doesn't move while video appears
   if (sealWrapper) {
     sealWrapper.style.animation = 'none';
     sealWrapper.style.transform = 'translateY(0)';
   }
 
-  // Known video duration from compressed file: ~5 seconds
   const VIDEO_DURATION_MS = 4000;
-  const FADE_OUT_DURATION_MS = 2000;  // last 2s of video fades out
-  const FADE_OUT_START_MS = VIDEO_DURATION_MS - FADE_OUT_DURATION_MS;  // 3s in
+  const FADE_OUT_DURATION_MS = 2000;
+  const FADE_OUT_START_MS = VIDEO_DURATION_MS - FADE_OUT_DURATION_MS;
 
-  // Show & play video (must be triggered by user tap so iOS allows it)
-  video.classList.add('playing');
-  const playPromise = video.play();
-
-  if (playPromise && playPromise.catch) {
-    playPromise.catch(err => {
-      // Video failed (autoplay blocked, codec issue, etc.) — fall back to instant reveal
-      console.warn('Video failed, falling back:', err);
-      video.remove();
+  // === The "reveal page + enable scroll" sequence — guaranteed to run ===
+  function revealAndEnableScroll() {
+    if (gate && gate.parentNode) {
       gate.classList.add('opening');
-      setTimeout(() => {
-        main.classList.add('revealed');
-        document.body.style.overflow = 'auto';
-        gate.remove();
-      }, 200);
-    });
+    }
+    if (main) main.classList.add('revealed');
+    // Restore scroll: remove the locking class. CSS class is reliable across browsers.
+    document.body.classList.remove('gate-locked');
+    document.documentElement.classList.remove('gate-locked');
+    // Defensive: clear any stale inline overflow that prior code may have set
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    // Remove gate from DOM after fade
+    setTimeout(() => {
+      if (gate && gate.parentNode) gate.remove();
+    }, 1400);
+  }
+
+  // === Video cleanup — guaranteed to remove video element ===
+  function removeVideoForever() {
+    if (video && video.parentNode) {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+      video.remove();
+    }
+  }
+
+  // Try to play video; if it fails, reveal immediately
+  let videoPlayedSuccessfully = false;
+
+  try {
+    video.classList.add('playing');
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.then(() => {
+        videoPlayedSuccessfully = true;
+      }).catch(err => {
+        console.warn('Video failed, fallback reveal:', err);
+        removeVideoForever();
+        revealAndEnableScroll();
+      });
+    }
+  } catch (err) {
+    console.warn('Video error:', err);
+    removeVideoForever();
+    revealAndEnableScroll();
+    return;
   }
 
   // Hide gate quickly once video covers screen
-  setTimeout(() => gate.classList.add('opening'), 150);
-
-  // Reveal main page UNDER the video so it's ready when video fades
   setTimeout(() => {
-    main.classList.add('revealed');
-    document.body.style.overflow = 'auto';
-    if (gate.parentNode) gate.remove();
+    if (gate && gate.parentNode) gate.classList.add('opening');
+  }, 150);
+
+  // Reveal main page UNDER the video — runs whether video succeeds or not
+  setTimeout(() => {
+    revealAndEnableScroll();
   }, 1000);
 
-  // Begin video fade-out 2s before end
+  // Begin video fade-out 2s before its end
   setTimeout(() => {
-    video.classList.remove('playing');
-    video.classList.add('fading-out');
+    if (video) {
+      video.classList.remove('playing');
+      video.classList.add('fading-out');
+    }
   }, FADE_OUT_START_MS);
 
-  // Clean up video after fade is complete
+  // Hard cleanup — remove video element no matter what
   setTimeout(() => {
-    if (video.parentNode) video.remove();
-  }, VIDEO_DURATION_MS + 200);
+    removeVideoForever();
+    // Defensive: re-enable scroll in case anything went wrong
+    document.body.classList.remove('gate-locked');
+    document.documentElement.classList.remove('gate-locked');
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }, VIDEO_DURATION_MS + 500);
+
+  // Ultimate safety net: 6 seconds later, force everything reset
+  setTimeout(() => {
+    removeVideoForever();
+    document.body.classList.remove('gate-locked');
+    document.documentElement.classList.remove('gate-locked');
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.height = '';
+    document.documentElement.style.overflow = '';
+  }, 6000);
 }
-document.body.style.overflow = 'hidden';
+
+// Lock scroll initially via CSS class (cleaner than inline style)
+document.body.classList.add('gate-locked');
 
 // Personalization from invitation:
 // 1. Server-side meta tags (set when /i/[id] route handler injects)

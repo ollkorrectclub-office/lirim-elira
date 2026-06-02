@@ -250,6 +250,7 @@ body::before {
 }
 
 #transition-video.fading-out {
+  display: block;              /* keep visible during fade — opacity transition can't run on display:none */
   opacity: 0;
   transition: opacity 2s ease-in-out;
 }

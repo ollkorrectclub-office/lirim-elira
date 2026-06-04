@@ -1756,7 +1756,11 @@ function openRsvpModal(answer) {
 
   // Pre-populate name from invitation if available
   if (invitationGuestName) {
-    const parts = invitationGuestName.trim().split(/\s+/);
+    // Clean: remove "&", "+", ",", "/" and similar separators that aren't valid in person names
+    // "Rigon & Artina" → "Rigon Artina" → firstname=Rigon, lastname=Artina
+    // "Familja Berisha" → unchanged
+    const cleanName = invitationGuestName.replace(/\s*[&+,/]\s*/g, ' ').trim();
+    const parts = cleanName.split(/\s+/);
     if (parts.length === 1) {
       firstnameEl.value = parts[0];
       lastnameEl.value = '';

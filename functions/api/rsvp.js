@@ -26,7 +26,8 @@ export async function onRequestPost({ request, env }) {
       return jsonResponse({ error: 'Përgjigje e pavlefshme.' }, 400);
     }
 
-    const nameRegex = /^[\p{L}\p{M}\s\-'.]+$/u;
+    // Allow letters, marks, whitespace, hyphens, apostrophes, dots, ampersands
+    const nameRegex = /^[\p{L}\p{M}\s\-'.&]+$/u;
     if (!nameRegex.test(firstname) || !nameRegex.test(lastname)) {
       return jsonResponse({ error: 'Ju lutem shkruani vetëm shkronja.' }, 400);
     }
